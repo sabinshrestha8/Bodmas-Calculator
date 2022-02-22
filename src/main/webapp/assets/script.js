@@ -1,14 +1,29 @@
-// This function clear all the values
+// clear all the values
 function clearScreen() {
     document.getElementById("result").value = "";
 }
 
-// This function display values
+// display values
 function display(value) {
     document.getElementById("result").value += value;
 }
-// This function evaluates the expression and return result
-function calculate() {
-    const p = document.getElementById("result").value;
-    document.getElementById("result").value = eval(p);
+
+
+const displayBox = document.querySelector(".display-box");
+const calculate = document.querySelector("#calc");
+
+calculate.onclick = () => {
+    console.log("hello");
+    if(displayBox.value.length > 0) {
+        let expression = displayBox.value.replace("x", "*");
+
+        fetch(`calculation?expression=${encodeURIComponent(expression)}`)
+            .then(res =>
+                res.json()
+            ).then(data => {
+            displayBox.value = data.output;
+        }).catch(e => {
+            console.log({"error": e.message})
+        });
+    }
 }
